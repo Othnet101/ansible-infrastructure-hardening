@@ -1,0 +1,33 @@
+# =============================================
+# Ansible Sensitive Files
+# =============================================
+
+# Real inventory with credentials — never commit this
+inventory/hosts.ini
+
+# Ansible Vault password files
+.vault_pass
+.vault_pass.txt
+vault_password_file
+
+# SSH private keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# =============================================
+# Ansible Generated Files
+# =============================================
+*.retry
+reports/
+
+# =============================================
+# OS / Editor
+# =============================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/

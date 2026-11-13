@@ -1,0 +1,9 @@
+- name: Application Server Hardening
+  hosts: app
+  become: yes
+
+  roles:
+    - system_app
+
+  tasks:
+    - import_tasks: ../roles/system_app/tasks/hardening.yml

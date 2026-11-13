@@ -1,0 +1,8 @@
+- name: AD Audit
+  hosts: ad
+
+  roles:
+    - system_ad
+
+  tasks:
+    - import_tasks: ../roles/system_ad/tasks/audit.yml

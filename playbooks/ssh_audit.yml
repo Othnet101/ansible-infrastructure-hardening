@@ -1,0 +1,6 @@
+- name: SSH CIS Audit
+  hosts: dmz_web,app,db
+  become: yes
+
+  roles:
+    - ssh_audit

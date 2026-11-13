@@ -1,0 +1,34 @@
+- include_vars: controls.yml
+
+- name: Check required services
+  shell: service {{ item }} status
+  loop: "{{ opnsense_controls.required_services }}"
+  register: required_services
+  failed_when: false
+  changed_when: false
+
+- name: Check forbidden services
+  shell: service {{ item }} status
+  loop: "{{ opnsense_controls.forbidden_services }}"
+  register: forbidden_services
+  failed_when: false
+  changed_when: false
+
+- name: Check listening ports
+  shell: sockstat -4 -l
+  register: ports
+  changed_when: false
+
+- name: Check PF rules
+  shell: pfctl -sr
+  register: firewall_rules
+  changed_when: false
+
+- name: OPNsense Audit Summary
+  debug:
+    msg:
+      - "OPNsENSE AUDIT REPORT"
+      - "Required services checked"
+      - "Forbidden services checked"
+      - "Firewall rules checked"
+      - "Ports checked"

@@ -1,0 +1,18 @@
+opnsense_controls:
+  forbidden_services:
+    - telnet
+
+  required_services:
+    - sshd
+    - pf
+
+  allowed_ports:
+    - 22
+    - 443
+
+  sysctl:
+    net.inet.ip.forwarding: 1
+    net.inet.icmp.drop_redirect: 1
+
+  forbidden_rules:
+    - any-any

@@ -1,0 +1,16 @@
+ad_controls:
+  forbidden_features:
+    - Telnet-Client
+
+  required_services:
+    - NTDS
+    - DNS
+
+  password_policy:
+    min_length: 14
+    max_age: 60
+    lockout_threshold: 5
+
+  forbidden_ports:
+    - 21
+    - 23

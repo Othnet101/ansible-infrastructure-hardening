@@ -1,0 +1,43 @@
+- include_vars: controls.yml
+
+- name: Remove unsafe packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  loop: "{{ db_controls.forbidden_packages }}"
+  ignore_errors: yes
+
+- name: Gather service facts
+  service_facts:
+
+- name: Disable unsafe network services
+  systemd:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+  loop: "{{ db_controls.forbidden_services }}"
+  when: ansible_facts.services[item + '.service'] is defined
+
+- name: Apply sysctl hardening
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+  loop: "{{ db_controls.sysctl | dict2items }}"
+
+- name: Secure DB directories
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0750"
+  loop: "{{ db_controls.sensitive_paths }}"
+
+- name: Restart DB services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop: "{{ db_controls.db_services }}"
+  ignore_errors: yes

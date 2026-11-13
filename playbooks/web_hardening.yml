@@ -1,0 +1,8 @@
+- name: DMZ Web Hardening
+  hosts: dmz_web
+  become: yes
+
+  tasks:
+    - import_role:
+        name: system_web
+        tasks_from: hardening.yml

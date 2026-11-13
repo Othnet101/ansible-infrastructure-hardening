@@ -1,0 +1,49 @@
+- include_vars: controls.yml
+
+- name: Install Apache safely required modules
+  command: a2enmod headers
+  ignore_errors: yes
+
+- name: Disable unsafe Apache modules
+  command: a2dismod autoindex
+  ignore_errors: yes
+
+- name: Remove forbidden packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  loop: "{{ web_controls.forbidden_packages }}"
+  ignore_errors: yes
+
+- name: Fix web root permissions
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "{{ web_controls.web_root_mode }}"
+  loop: "{{ web_controls.sensitive_paths }}"
+
+- name: Enable security headers safely
+  blockinfile:
+    path: /etc/apache2/conf-available/security.conf
+    create: yes
+    block: |
+      Header always set X-Frame-Options SAMEORIGIN
+      Header always set X-Content-Type-Options nosniff
+      Header always set Content-Security-Policy "default-src 'self'"
+
+- name: Enable security config
+  command: a2enconf security
+  ignore_errors: yes
+
+- name: Test Apache config
+  command: apache2ctl configtest
+  register: apache_test
+  changed_when: false
+  failed_when: apache_test.rc != 0
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted

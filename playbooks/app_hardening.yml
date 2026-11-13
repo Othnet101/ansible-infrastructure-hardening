@@ -1,0 +1,8 @@
+- name: DMZ Web Security Audit
+  hosts: dmz_web
+  become: yes
+
+  tasks:
+    - import_role:
+        name: system_web
+        tasks_from: audit.yml

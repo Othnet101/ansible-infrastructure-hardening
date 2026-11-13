@@ -1,0 +1,6 @@
+- name: SSH CIS Hardening
+  hosts: dmz_web,app,db
+  become: yes
+
+  roles:
+    - ssh_hardening

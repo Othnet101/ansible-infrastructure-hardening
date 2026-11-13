@@ -1,0 +1,32 @@
+- name: Load baseline controls
+  include_vars: controls.yml
+
+# --- SERVICE AUDIT ---
+- name: Check for unsafe packages
+  shell: dpkg -l | grep "^ii" | grep "{{ item }}"
+  loop: "{{ baseline_controls.remove_unsafe_packages }}"
+  register: package_audit
+  failed_when: false
+  changed_when: false
+
+# --- FILE PERMISSION AUDIT ---
+- name: Check critical file permissions
+  stat:
+    path: "{{ item.path }}"
+  loop: "{{ baseline_controls.file_permissions }}"
+  register: file_audit
+
+# --Kernel AUDIT ---
+- name: Check sysctl values
+  command: sysctl {{ item.key }}
+  loop: "{{ baseline_controls.kernel_security.sysctl | dict2items }}"
+  register: sysctl_audit
+  ignore_errors: yes
+
+# --Report ---
+- name: Show audit summary
+  debug:
+    msg:
+      - "Unsafe packages checked"
+      - "Critical permissions checked"
+      - "Kernel parameters checked"

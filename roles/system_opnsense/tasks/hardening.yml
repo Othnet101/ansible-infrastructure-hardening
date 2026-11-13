@@ -1,0 +1,14 @@
+- include_vars: controls.yml
+
+- name: Disable forbidden services
+  shell: service {{ item }} stop
+  loop: "{{ opnsense_controls.forbidden_services }}"
+  failed_when: false
+
+- name: Apply sysctl hardening
+  shell: sysctl {{ item.key }}={{ item.value }}
+  loop: "{{ opnsense_controls.sysctl | dict2items }}"
+
+- name: Ensure required services running
+  shell: service {{ item }} start
+  loop: "{{ opnsense_controls.required_services }}"

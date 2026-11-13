@@ -1,0 +1,26 @@
+- include_vars: controls.yml
+
+- name: Check AD services
+  win_shell: |
+    Get-Service {{ item }}
+  loop: "{{ ad_controls.required_services }}"
+  register: ad_services
+  failed_when: false
+
+- name: Check password policy
+  win_shell: |
+    net accounts
+  register: pass_policy
+
+- name: Check open ports
+  win_shell: |
+    netstat -an
+  register: ports
+
+- name: AD Audit Summary
+  debug:
+    msg:
+      - "AD AUDIT REPORT"
+      - "Services checked"
+      - "Password policy checked"
+      - "Ports checked"

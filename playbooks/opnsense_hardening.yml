@@ -1,0 +1,9 @@
+- name: OPNsense Hardening
+  hosts: firewall
+  become: yes
+
+  roles:
+    - system_opnsense
+
+  tasks:
+    - import_tasks: ../roles/system_opnsense/tasks/hardening.yml

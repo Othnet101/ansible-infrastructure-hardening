@@ -1,0 +1,29 @@
+app_controls:
+
+  allowed_ports:
+    - 22
+    - 8080
+
+  required_app_services:
+    - docker
+
+  forbidden_packages:
+    - telnet
+    - rsh-client
+    - rexec
+
+  sensitive_paths:
+    - /opt
+    - /srv
+
+  secure_mode: "0755"
+
+  forbidden_filesystems:
+    - cramfs
+    - squashfs
+    - udf
+
+  sysctl_rules:
+    net.ipv4.ip_forward: 0
+    net.ipv4.conf.all.accept_redirects: 0
+    net.ipv4.conf.all.send_redirects: 0

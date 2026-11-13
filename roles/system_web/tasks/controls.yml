@@ -1,0 +1,27 @@
+web_controls:
+
+  allowed_ports:
+    - 80
+    - 443
+    - 22
+
+  forbidden_services:
+    - apache2
+
+  forbidden_packages:
+    - telnet
+    - rsh-client
+    - rexec
+
+  forbidden_modules:
+    - autoindex
+
+  web_root_mode: "0755"
+
+  sensitive_paths:
+    - /var/www/html
+
+  security_headers:
+    - X-Frame-Options
+    - X-Content-Type-Options
+    - Content-Security-Policy

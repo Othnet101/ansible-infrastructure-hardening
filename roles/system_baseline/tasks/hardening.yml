@@ -1,0 +1,34 @@
+- name: Load baseline controls
+  include_vars: controls.yml
+
+# -DISABLE UNSAFE SERVICES ---
+- name: Remove unsafe packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ baseline_controls.remove_unsafe_packages }}"
+  ignore_errors: yes
+
+# -SET FILE PERMISSIONS ---
+- name: Enforce secure permissions
+  file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ baseline_controls.file_permissions }}"
+
+# -Ensure SERVICES ---
+- name: Enable required services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ baseline_controls.required_services }}"
+
+# -Sysctl HARDENING ---
+- name: Apply sysctl hardening
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+  loop: "{{ baseline_controls.kernel_security.sysctl | dict2items }}"

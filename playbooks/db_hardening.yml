@@ -1,0 +1,9 @@
+- name: DB Hardening
+  hosts: db
+  become: yes
+
+  roles:
+    - system_db
+
+  tasks:
+    - import_tasks: ../roles/system_db/tasks/hardening.yml

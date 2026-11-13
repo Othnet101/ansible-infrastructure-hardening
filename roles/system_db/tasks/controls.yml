@@ -1,0 +1,31 @@
+db_controls:
+  forbidden_packages:
+    - telnet
+    - rsh-client
+    - rexec
+    - ftp
+
+  forbidden_services:
+    - rpcbind
+    - nfs-server
+
+  allowed_ports:
+    - 22
+    - 3306
+    - 5432
+
+  db_services:
+    - mysql
+    - postgresql
+
+  sysctl:
+    net.ipv4.ip_forward: 0
+    net.ipv4.conf.all.accept_redirects: 0
+    net.ipv4.conf.all.send_redirects: 0
+    net.ipv4.conf.all.rp_filter: 1
+
+  sensitive_paths:
+    - /var/lib/mysql
+    - /var/lib/postgresql
+    - /etc/mysql
+    - /etc/postgresql

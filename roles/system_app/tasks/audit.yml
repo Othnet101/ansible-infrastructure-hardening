@@ -1,0 +1,43 @@
+- include_vars: controls.yml
+
+- name: Check installed forbidden packages
+  shell: dpkg -l | grep "^ii" | grep "{{ item }}"
+  loop: "{{ app_controls.forbidden_packages }}"
+  register: pkg_audit
+  failed_when: false
+  changed_when: false
+
+- name: Gather services
+  service_facts:
+
+- name: Extract listening ports
+  shell: ss -tuln | awk 'NR>1 {print $5}' | sed 's/.*://g' | sort -u
+  register: ports
+  changed_when: false
+
+- name: Check sensitive path permissions
+  stat:
+    path: "{{ item }}"
+  loop: "{{ app_controls.sensitive_paths }}"
+  register: perms
+
+- name: Audit forbidden filesystems
+  shell: lsmod | grep "{{ item }}"
+  loop: "{{ app_controls.forbidden_filesystems }}"
+  register: fs_audit
+  failed_when: false
+  changed_when: false
+
+- name: Audit sysctl rules
+  shell: sysctl {{ item.key }}
+  loop: "{{ app_controls.sysctl_rules | dict2items }}"
+  register: sysctl_audit
+  changed_when: false
+
+- name: App audit summary
+  debug:
+    msg:
+      - "[APP] Ports : {{ ports.stdout_lines | join(' ') }}"
+      - "[APP] Docker : {{ 'RUNNING' if ansible_facts.services['docker.service'].state == 'running' else 'STOPPED' }}"
+      - "[APP] Unsafe PKG : {{ 'FOUND' if pkg_audit.results | selectattr('rc','equalto',0) | list | length > 0 else 'CLEAN' }}"
+      - "[APP] Forbidden FS : {{ 'LOADED' if fs_audit.results | selectattr('rc','equalto',0) | list | length > 0 else 'DISABLED' }}"

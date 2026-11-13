@@ -1,0 +1,20 @@
+- include_vars: controls.yml
+
+- name: Remove forbidden features
+  win_feature:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ ad_controls.forbidden_features }}"
+
+- name: Configure password policy
+  win_shell: |
+    net accounts /minpwlen:{{ ad_controls.password_policy.min_length }}
+    net accounts /maxpwage:{{ ad_controls.password_policy.max_age }}
+    net accounts /lockoutthreshold:{{ ad_controls.password_policy.lockout_threshold }}
+
+- name: Ensure AD services running
+  win_service:
+    name: "{{ item }}"
+    start_mode: auto
+    state: started
+  loop: "{{ ad_controls.required_services }}"

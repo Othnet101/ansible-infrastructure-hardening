@@ -1,0 +1,39 @@
+- include_vars: controls.yml
+
+- name: Remove forbidden packages
+  apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  loop: "{{ app_controls.forbidden_packages }}"
+  ignore_errors: yes
+
+- name: Disable forbidden filesystems
+  lineinfile:
+    path: /etc/modprobe.d/hardening.conf
+    create: yes
+    line: "install {{ item }} /bin/true"
+  loop: "{{ app_controls.forbidden_filesystems }}"
+
+- name: Apply sysctl hardening
+  sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+  loop: "{{ app_controls.sysctl_rules | dict2items }}"
+
+- name: Fix sensitive path permissions
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "{{ app_controls.secure_mode }}"
+  loop: "{{ app_controls.sensitive_paths }}"
+
+- name: Ensure Docker service enabled
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  ignore_errors: yes

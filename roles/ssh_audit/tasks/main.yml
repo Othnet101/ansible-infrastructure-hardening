@@ -1,0 +1,39 @@
+- name: Check PermitRootLogin
+  command: grep "^PermitRootLogin" /etc/ssh/sshd_config
+  register: root_login
+  ignore_errors: yes
+
+- name: Check PasswordAuthentication
+  command: grep "^PasswordAuthentication" /etc/ssh/sshd_config
+  register: password_auth
+  ignore_errors: yes
+
+- name: Check PermitEmptyPasswords
+  command: grep "^PermitEmptyPasswords" /etc/ssh/sshd_config
+  register: empty_pass
+  ignore_errors: yes
+
+- name: Check Protocol
+  command: grep "^Protocol" /etc/ssh/sshd_config
+  register: protocol
+  ignore_errors: yes
+
+- name: Check ClientAliveInterval
+  command: grep "^ClientAliveInterval" /etc/ssh/sshd_config
+  register: timeout
+  ignore_errors: yes
+
+- name: Check X11Forwarding
+  command: grep "^X11Forwarding" /etc/ssh/sshd_config
+  register: x11
+  ignore_errors: yes
+
+- name: Show results
+  debug:
+    msg:
+      - "RootLogin: {{ root_login.stdout }}"
+      - "PasswordAuth: {{ password_auth.stdout }}"
+      - "EmptyPasswords: {{ empty_pass.stdout }}"
+      - "Protocol: {{ protocol.stdout }}"
+      - "Timeout: {{ timeout.stdout }}"
+      - "X11: {{ x11.stdout }}"
