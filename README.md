@@ -1,18 +1,18 @@
-# 🛡️ Ansible Infrastructure Hardening
+# Ansible Infrastructure Hardening
 
 An Ansible-based automation project for **auditing and hardening** a multi-tier infrastructure including web servers, application servers, databases, Active Directory, firewalls (OPNsense), and SSH configurations.
 
 ---
 
-## 🗺️ Infrastructure Architecture
+## Target Infrastructure Architecture
 
 ![Infrastructure Architecture](docs/architecture.png)
 
-> Multi-tier network: DMZ (web server via DMZ-router), internal production zone (App, DB, AD servers) through Core and Prod switches, OPNsense Firewall between internet and internal segments, managed by a System Admin workstation via Ansible.
+> Multi-tier network: DMZ (web server via DMZ-router), internal production zone (App, DB, AD servers) through Core and Prod switches, OPNsense Firewall between internet and internal segments, managed by a Centralized System Admin workstation via Ansible.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 
 ```
@@ -51,7 +51,7 @@ ansible-infrastructure-hardening/
 
 ---
 
-## 🎯 Scope
+## Scope
 
 | Target           | Audit | Hardening |
 |------------------|:-----:|:---------:|
@@ -61,11 +61,11 @@ ansible-infrastructure-hardening/
 | App Server       | ✅    | ✅        |
 | Database Server  | ✅    | ✅        |
 | Active Directory | ✅    | ✅        |
-| OPNsense FW      | ✅    | ✅        |
+| Firewall         | ✅    | ✅        |
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 
 - **Ansible** >= 2.12
 - **Python** >= 3.8
@@ -75,33 +75,7 @@ ansible-infrastructure-hardening/
 
 ---
 
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/<YOUR_USERNAME>/ansible-infrastructure-hardening.git
-cd ansible-infrastructure-hardening
-```
-
-### 2. Set up your inventory
-
-```bash
-cp inventory/hosts.ini.example inventory/hosts.ini
-# Edit hosts.ini and fill in your real IPs and credentials
-```
-
-> ⚠️ **Never commit `hosts.ini`** — it is listed in `.gitignore` to protect your credentials.
-
-### 3. (Recommended) Use Ansible Vault for secrets
-
-```bash
-ansible-vault encrypt_string 'your_password' --name 'ansible_ssh_pass'
-```
-
----
-
-## 📋 Usage
+## Usage
 
 ### Run an audit
 
@@ -149,14 +123,6 @@ ansible-playbook -i inventory/hosts.ini playbooks/opnsense_hardening.yml
 
 ---
 
-## 🔐 Security Notes
-
-- Real inventory files (`hosts.ini`) are **git-ignored** and must never be committed.
-- Use **Ansible Vault** to encrypt sensitive variables in production.
-- SSH private keys and vault password files are also git-ignored.
-
----
-
-## 📄 License
+## License
 
 This project is for educational and internal use. Adapt freely.
