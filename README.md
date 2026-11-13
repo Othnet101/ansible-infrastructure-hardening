@@ -4,7 +4,7 @@ An Ansible-based automation project for **auditing and hardening** a multi-tier 
 
 ---
 
-## Target Infrastructure Architecture
+## Target Infrastructure Architecture ( Eve-ng simulation )
 
 ![Infrastructure Architecture](docs/architecture.png)
 
