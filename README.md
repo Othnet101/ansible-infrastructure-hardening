@@ -1,6 +1,6 @@
 # 🛡️ Ansible Infrastructure Hardening
 
-An Ansible-based automation project for **auditing and hardening** a multi-tier infrastructure including web servers, application servers, databases, Active Directory, firewalls (OPNsense), and SSH configurations.
+An Ansible-based automation project for **auditing and hardening** a multi-tier infrastructure including web servers, application servers, databases, Active Directory, firewalls, and SSH configurations.
 
 ---
 
@@ -9,10 +9,10 @@ An Ansible-based automation project for **auditing and hardening** a multi-tier 
 ```
 ansible-infrastructure-hardening/
 ├── inventory/
-│   ├── hosts.ini.example     # Template inventory (copy and fill in your values)
-│   └── hosts.ini             # Your real inventory (git-ignored, never committed)
-├── group_vars/               # Group-level variables
-├── host_vars/                # Host-level variables
+│   ├── hosts.ini.example   
+│   └── hosts.ini          
+├── group_vars/               
+├── host_vars/                
 ├── playbooks/
 │   ├── ssh_audit.yml
 │   ├── ss_hardening.yml
@@ -37,7 +37,7 @@ ansible-infrastructure-hardening/
 │   ├── system_db/
 │   ├── system_ad/
 │   └── system_opnsense/
-└── reports/                  # Generated audit reports (git-ignored)
+└── reports/                  
 ```
 
 ---
@@ -52,43 +52,17 @@ ansible-infrastructure-hardening/
 | App Server       | ✅    | ✅        |
 | Database Server  | ✅    | ✅        |
 | Active Directory | ✅    | ✅        |
-| OPNsense FW      | ✅    | ✅        |
+| Firewall         | ✅    | ✅        |
 
 ---
 
-## ⚙️ Requirements
+##  Requirements
 
 - **Ansible** >= 2.12
 - **Python** >= 3.8
 - **pywinrm** (for Windows/AD targets): `pip install pywinrm`
 - SSH access to Linux hosts
 - WinRM enabled on Windows/AD hosts
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/<YOUR_USERNAME>/ansible-infrastructure-hardening.git
-cd ansible-infrastructure-hardening
-```
-
-### 2. Set up your inventory
-
-```bash
-cp inventory/hosts.ini.example inventory/hosts.ini
-# Edit hosts.ini and fill in your real IPs and credentials
-```
-
-> ⚠️ **Never commit `hosts.ini`** — it is listed in `.gitignore` to protect your credentials.
-
-### 3. (Recommended) Use Ansible Vault for secrets
-
-```bash
-ansible-vault encrypt_string 'your_password' --name 'ansible_ssh_pass'
-```
 
 ---
 
@@ -120,7 +94,7 @@ ansible-playbook -i inventory/hosts.ini playbooks/opnsense_audit.yml
 
 ```bash
 # SSH hardening
-ansible-playbook -i inventory/hosts.ini playbooks/ss_hardening.yml
+ansible-playbook -i inventory/hosts.ini playbooks/ssh_hardening.yml
 
 # System baseline hardening
 ansible-playbook -i inventory/hosts.ini playbooks/system_hardening.yml
@@ -139,12 +113,6 @@ ansible-playbook -i inventory/hosts.ini playbooks/opnsense_hardening.yml
 ```
 
 ---
-
-## 🔐 Security Notes
-
-- Real inventory files (`hosts.ini`) are **git-ignored** and must never be committed.
-- Use **Ansible Vault** to encrypt sensitive variables in production.
-- SSH private keys and vault password files are also git-ignored.
 
 ---
 
