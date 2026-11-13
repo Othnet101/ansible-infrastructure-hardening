@@ -6,9 +6,9 @@ An Ansible-based automation project for **auditing and hardening** a multi-tier 
 
 ## 🗺️ Infrastructure Architecture
 
-![Infrastructure Architecture](docs/architecture.jpg)
+![Infrastructure Architecture](docs/architecture.png)
 
-> The infrastructure consists of a **DMZ** (web server behind a DMZ-router), an internal **production network** (App, DB, AD servers) managed through a Core Switch → Prod Switch hierarchy, and an **OPNsense Firewall** sitting between the internet (via Border-Router) and all internal segments. A **System Admin** workstation orchestrates everything via Ansible.
+> Multi-tier network: DMZ (web server via DMZ-router), internal production zone (App, DB, AD servers) through Core and Prod switches, OPNsense Firewall between internet and internal segments, managed by a System Admin workstation via Ansible.
 
 ---
 
