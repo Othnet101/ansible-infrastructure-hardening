@@ -4,7 +4,7 @@ An Ansible-based automation project for **auditing and hardening** a multi-tier 
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ansible-infrastructure-hardening/
@@ -42,7 +42,7 @@ ansible-infrastructure-hardening/
 
 ---
 
-## 🎯 Scope
+## Scope
 
 | Target           | Audit | Hardening |
 |------------------|:-----:|:---------:|
@@ -66,7 +66,7 @@ ansible-infrastructure-hardening/
 
 ---
 
-## 📋 Usage
+## Usage
 
 ### Run an audit
 
@@ -116,6 +116,6 @@ ansible-playbook -i inventory/hosts.ini playbooks/opnsense_hardening.yml
 
 ---
 
-## 📄 License
+## License
 
 This project is for educational and internal use. Adapt freely.
