@@ -15,7 +15,7 @@ ansible-infrastructure-hardening/
 ├── host_vars/                
 ├── playbooks/
 │   ├── ssh_audit.yml
-│   ├── ss_hardening.yml
+│   ├── ssh_hardening.yml
 │   ├── system_audit.yml
 │   ├── system_hardening.yml
 │   ├── web_audit.yml
